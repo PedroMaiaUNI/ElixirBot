@@ -1,5 +1,6 @@
 defmodule KoboldBot.PokeCommand do
-  @endpoint "https://pokeapi.co/api/v2/pokemon/"
+  @pokeapi "https://pokeapi.co/api/v2/pokemon/"
+  @smogon_base "https://raw.githubusercontent.com/pkmn/smogon/main/data/stats/gen9ou.json"
 
   @type_emojis %{
     "normal" => "⚪",
@@ -30,26 +31,12 @@ defmodule KoboldBot.PokeCommand do
       is_nil(name) -> "Uso: `!pokemon <name>` (ex: `!pokemon weavile`)"
 
       true ->
-        url = @endpoint <> String.downcase(name)
+        url = @pokeapi <> String.downcase(name)
 
         case Finch.build(:get, url) |> Finch.request(MyFinch) do
           {:ok, %{status: 200, body: body}} ->
             with {:ok, json} <- JSON.decode(body) do
-              name_cap = String.capitalize(name)
-              types = extract_types(json)
-              height = json["height"] / 10
-              weight = json["weight"] / 10
-              ability = get_in(json, ["abilities", Access.at(0), "ability", "name"]) |> String.capitalize()
-
-              """
-              **#{name_cap}**
-              🌀 Tipos: #{types}
-              💪 Habilidade principal: #{ability}
-              📏 Altura: #{height} m
-              ⚖️ Peso: #{weight} kg
-
-              🔗 [Mais detalhes](https://pokemondb.net/pokedex/#{String.downcase(name_cap)})
-              """
+              build_response(name, json)
             end
 
           {:ok, %{status: 404}} ->
@@ -58,6 +45,62 @@ defmodule KoboldBot.PokeCommand do
           {:error, _reason} ->
             "Erro ao acessar a PokéAPI."
         end
+    end
+  end
+
+  defp build_response(name, poke_json) do
+    name_cap = String.capitalize(name)
+    types = extract_types(poke_json)
+    height = poke_json["height"] / 10
+    weight = poke_json["weight"] / 10
+    ability =
+      get_in(poke_json, ["abilities", Access.at(0), "ability", "name"])
+      |> String.capitalize()
+
+    # Dados competitivos
+    smogon_data = fetch_smogon_data(name_cap)
+
+    """
+    **#{name_cap}**
+    🌀 Tipos: #{types}
+    💪 Habilidade principal: #{ability}
+    📏 Altura: #{height} m | ⚖️ Peso: #{weight} kg
+
+    ⚔️ **Dados competitivos (Smogon - Gen 9 OU)**
+    #{smogon_data}
+
+    🔗 [Mais detalhes (PokémonDB)](https://pokemondb.net/pokedex/#{String.downcase(name)})
+    """
+  end
+
+  defp fetch_smogon_data(name) do
+    case HTTPoison.get(@smogon_base) do
+      {:ok, %{status_code: 200, body: body}} ->
+        with {:ok, json} <- Jason.decode(body),
+             %{"pokemon" => data} <- json,
+             poke <- Map.get(data, name) do
+          if poke do
+            usage = poke["usage"]["real"] |> Float.round(2)
+            items = poke["items"] |> Enum.sort_by(fn {_k, v} -> -v end) |> Enum.take(3) |> Enum.map(fn {i, _} -> i end)
+            moves = poke["moves"] |> Enum.sort_by(fn {_k, v} -> -v end) |> Enum.take(4) |> Enum.map(fn {m, _} -> m end)
+            abilities = poke["abilities"] |> Enum.sort_by(fn {_k, v} -> -v end) |> Enum.take(2) |> Enum.map(fn {a, _} -> a end)
+
+            """
+            📊 Uso: #{usage}%
+            🎒 Itens mais usados: #{Enum.join(items, ", ")}
+            💥 Moves mais usados: #{Enum.join(moves, ", ")}
+            🧬 Habilidades usadas: #{Enum.join(abilities, ", ")}
+            """
+          else
+            "Sem dados competitivos disponíveis para #{name}."
+          end
+
+        else
+          _ -> "Sem dados competitivos disponíveis."
+        end
+
+      _ ->
+        "Erro ao consultar dados competitivos."
     end
   end
 
