@@ -1,3 +1,3 @@
-defmodule PFBot.MuteRoulette do
+defmodule KoboldBot.MuteRoulette do
 
 end

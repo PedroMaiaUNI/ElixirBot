@@ -1,4 +1,4 @@
-defmodule PFBot.Game do
+defmodule KoboldBot.Game do
 
   @valid_options ["pedra", "papel", "tesoura"]
 

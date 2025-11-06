@@ -1,4 +1,4 @@
-defmodule PFBot.Application do
+defmodule KoboldBot.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
