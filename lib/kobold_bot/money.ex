@@ -1,4 +1,4 @@
-defmodule KoboldBot.Money do
+defmodule WeavBot.Money do
 
   @endpoint "https://api.frankfurter.app/latest"
 

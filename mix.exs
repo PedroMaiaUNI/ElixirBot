@@ -1,9 +1,9 @@
-defmodule KoboldBot.MixProject do
+defmodule WeavBot.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :kobold_bot,
+      app: :weavbot,
       version: "0.1.0",
       elixir: "~> 1.17",
       start_permanent: Mix.env() == :prod,
@@ -15,7 +15,7 @@ defmodule KoboldBot.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {KoboldBot.Application, []}
+      mod: {WeavBot.Application, []}
     ]
   end
 

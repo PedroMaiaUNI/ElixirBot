@@ -1,4 +1,4 @@
-defmodule KoboldBot.Anilist do
+defmodule WeavBot.Anilist do
   @endpoint "https://graphql.anilist.co"
 
   def handle_anilist_command(msg) do

@@ -1,4 +1,4 @@
-defmodule KoboldBot.Map do
+defmodule WeavBot.Map do
   @nominatim_base "https://nominatim.openstreetmap.org/search"
 
   def handle_map_command(msg) do

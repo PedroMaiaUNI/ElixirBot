@@ -1,4 +1,4 @@
-defmodule KoboldBot.Bird do
+defmodule WeavBot.Bird do
 
   def handle_bird_command do
 

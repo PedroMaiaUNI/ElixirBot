@@ -1,4 +1,4 @@
-defmodule KoboldBot.Application do
+defmodule WeavBot.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -10,13 +10,13 @@ defmodule KoboldBot.Application do
     children = [
       # Starts a worker by calling: KoboldBot.Worker.start_link(arg)
       # {KoboldBot.Worker, arg}
-      KoboldBot,
+      WeavBot,
       {Finch, name: MyFinch}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: KoboldBot.Supervisor]
+    opts = [strategy: :one_for_one, name: WeavBot.Supervisor]
     Supervisor.start_link(children, opts)
   end
 end

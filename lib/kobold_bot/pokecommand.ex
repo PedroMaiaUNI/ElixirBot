@@ -1,4 +1,4 @@
-defmodule KoboldBot.PokeCommand do
+defmodule WeavBot.PokeCommand do
   @pokeapi "https://pokeapi.co/api/v2/pokemon/"
   @smogon_base "https://raw.githubusercontent.com/pkmn/smogon/main/data/stats/gen9ou.json"
 
