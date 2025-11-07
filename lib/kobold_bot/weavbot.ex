@@ -8,9 +8,12 @@ defmodule WeavBot do
   alias WeavBot.Bird
   alias WeavBot.Map
   alias WeavBot.Money
+  alias Weavbot.Help
 
   def handle_event({:MESSAGE_CREATE, msg, _ws}) do
     cond do
+
+      String.starts_with?(msg.content, "!help") -> Api.Message.create(msg.channel_id, Help.handle_help_command)
 
       #----- COMANDOS DO TRABALHO -----#
 

@@ -3,7 +3,7 @@ defmodule Weavbot.Help do
   Exibe uma lista de comandos disponíveis do Weavbot.
   """
 
-  def handle_help_command(_msg) do
+  def handle_help_command do
     """
 
     🐦 `!bird` - Mostra uma imagem aleatória de um pássaro e um fato curioso (ENGLISH ONLY).
