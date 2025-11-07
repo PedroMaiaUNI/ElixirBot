@@ -53,9 +53,6 @@ defmodule KoboldBot.PokeCommand do
     types = extract_types(poke_json)
     height = poke_json["height"] / 10
     weight = poke_json["weight"] / 10
-    ability =
-      get_in(poke_json, ["abilities", Access.at(0), "ability", "name"])
-      |> String.capitalize()
 
     # Dados competitivos
     smogon_data = fetch_smogon_data(name_cap)
@@ -63,7 +60,6 @@ defmodule KoboldBot.PokeCommand do
     """
     **#{name_cap}**
     🌀 Tipos: #{types}
-    💪 Habilidade principal: #{ability}
     📏 Altura: #{height} m | ⚖️ Peso: #{weight} kg
 
     ⚔️ **Dados competitivos (Smogon - Gen 9 OU)**

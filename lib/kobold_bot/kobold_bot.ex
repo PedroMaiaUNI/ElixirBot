@@ -8,6 +8,7 @@ defmodule KoboldBot do
   alias KoboldBot.PokeCommand
   alias KoboldBot.Anilist
   alias KoboldBot.Bird
+  alias KoboldBot.Map
 
   def handle_event({:MESSAGE_CREATE, msg, _ws}) do
     cond do
@@ -23,7 +24,7 @@ defmodule KoboldBot do
 
       #comandos de 1 argumento
       String.starts_with?(msg.content, "!pokemon") -> Api.Message.create(msg.channel_id, PokeCommand.handle_poke_command(msg))
-
+      String.starts_with?(msg.content, "!map") -> Api.Message.create(msg.channel_id, Map.handle_map_command(msg))
 
       #comandos de 2 ou mais argumentos
       String.starts_with?(msg.content, "!anilist") -> Api.Message.create(msg.channel_id, Anilist.handle_anilist_command(msg))
