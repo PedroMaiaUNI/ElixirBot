@@ -9,7 +9,7 @@ defmodule WeavBot.Bird do
           image = json["image"]
           fact = json["fact"]
 
-          "**CURIOSIDADE**: #{fact} \n #{image}"
+          "**DID YOU KNOW?**: #{fact} \n #{image}"
 
       _ -> "Erro ao buscar dados"
 

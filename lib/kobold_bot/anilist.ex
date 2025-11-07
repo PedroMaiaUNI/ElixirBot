@@ -104,13 +104,11 @@ defmodule WeavBot.Anilist do
          {:ok, %{"data" => %{"Character" => char}}} <- JSON.decode(res.body) do
       name = char["name"]["full"]
       desc = clean_description(char["description"])
-      image = char["image"]["large"]
       url = char["siteUrl"]
 
       """
       **#{name}**
       👤 Personagem
-      🖼️ #{image}
 
       #{desc}
 
@@ -146,13 +144,11 @@ defmodule WeavBot.Anilist do
       name = staff["name"]["full"]
       lang = staff["languageV2"] || "Desconhecido"
       desc = clean_description(staff["description"])
-      image = staff["image"]["large"]
       url = staff["siteUrl"]
 
       """
       **#{name}**
       🗣️ Idioma: #{lang}
-      🖼️ #{image}
 
       #{desc}
 
