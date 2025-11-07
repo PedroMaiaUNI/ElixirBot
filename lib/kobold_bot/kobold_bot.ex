@@ -9,6 +9,7 @@ defmodule KoboldBot do
   alias KoboldBot.Anilist
   alias KoboldBot.Bird
   alias KoboldBot.Map
+  alias KoboldBot.Money
 
   def handle_event({:MESSAGE_CREATE, msg, _ws}) do
     cond do
@@ -28,6 +29,7 @@ defmodule KoboldBot do
 
       #comandos de 2 ou mais argumentos
       String.starts_with?(msg.content, "!anilist") -> Api.Message.create(msg.channel_id, Anilist.handle_anilist_command(msg))
+      String.starts_with?(msg.content, "!money") -> Api.Message.create(msg.channel_id, Money.handle_money_command(msg))
 
       true -> :ignore
     end

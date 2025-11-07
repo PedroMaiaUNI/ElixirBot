@@ -3,10 +3,10 @@ defmodule KoboldBot.Map do
 
   def handle_map_command(msg) do
     parts = String.split(msg.content, " ", trim: true)
-    query = Enum.at(parts, 1)
+    query = Enum.drop(parts, 1) |> Enum.join(" ")
 
     cond do
-      is_nil(query) ->
+      query == "" ->
         "Uso: `!map <nome do lugar>` (ex: `!map Lisboa` ou `!map Torre Eiffel`)"
 
       true ->
